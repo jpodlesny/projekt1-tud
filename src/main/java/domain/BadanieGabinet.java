@@ -5,13 +5,17 @@ public class BadanieGabinet {
 	private long id;
 	private String nazwa;
 	private String opis;
-	private int koszt;
+	private String koszt;
 	private long idGabinet;
 	private String numerGabinet;
 	private String pietroGabinet;
 	private String lekarzGabinet;
 	
-	public BadanieGabinet(String nazwa, String opis, int koszt, long idGabinet, String numerGabinet, 
+	public BadanieGabinet(){
+		
+	}
+	
+	public BadanieGabinet(String nazwa, String opis, String koszt, long idGabinet, String numerGabinet, 
 			String pietroGabinet, String lekarzGabinet){
 		super();
 		this.nazwa=nazwa;
@@ -41,10 +45,10 @@ public class BadanieGabinet {
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
-	public int getKoszt() {
+	public String getKoszt() {
 		return koszt;
 	}
-	public void setKoszt(int koszt) {
+	public void setKoszt(String koszt) {
 		this.koszt = koszt;
 	}
 	public long getIdGabinet() {

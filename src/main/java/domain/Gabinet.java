@@ -8,6 +8,10 @@ public class Gabinet {
 	private String lekarz;
 	private int badanie;
 	
+	public Gabinet(){
+		
+	}
+	
 	public Gabinet(String numer, String pietro, String lekarz, int badanie){
 		super();
 		this.numer=numer;

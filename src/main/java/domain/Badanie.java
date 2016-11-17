@@ -5,9 +5,13 @@ public class Badanie {
 	private long id;
 	private String nazwa;
 	private String opis;
-	private int koszt;
+	private String koszt;
 	
-	public Badanie(String nazwa, String opis, int koszt){
+	public Badanie(){
+		
+	}
+	
+	public Badanie(String nazwa, String opis, String koszt){
 		super();
 		this.nazwa=nazwa;
 		this.opis=opis;
@@ -32,10 +36,10 @@ public class Badanie {
 	public void setOpis(String opis) {
 		this.opis = opis;
 	}
-	public int getKoszt() {
+	public String getKoszt() {
 		return koszt;
 	}
-	public void setKoszt(int koszt) {
+	public void setKoszt(String koszt) {
 		this.koszt = koszt;
 	}
 
