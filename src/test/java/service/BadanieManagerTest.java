@@ -26,36 +26,6 @@ public class BadanieManagerTest {
 	private final static String BAD_KOSZT_1_EDIT = "35";
 	
 	
-	
-	
-	
-	private final static String GAB_NUMER_1 = "22";
-	private final static String GAB_PIETRO_1 = "parter";
-	private final static String GAB_LEKARZ_1 = "Kowalski";
-	private final static int GAB_BADANIE_1 = 0;
-	
-	private final static String GAB_NUMER_2 = "8";
-	private final static String GAB_PIETRO_2 = "I";
-	private final static String GAB_LEKARZ_2 = "Nowak";
-	private final static int GAB_BADANIE_2 = 0;
-	
-	private final static String GAB_NUMER_3 = "14";
-	private final static String GAB_PIETRO_3 = "parter";
-	private final static String GAB_LEKARZ_3 = "Bordo";
-	private final static int GAB_BADANIE_3 = 1;
-	
-	
-	private final static String GAB_NUMER_1_EDIT = "9999";
-	private final static String GAB_PIETRO_1_EDIT = "XXX";
-	private final static String GAB_LEKARZ_1_EDIT = "Ciemny";
-	private final static int GAB_BADANIE_1_EDIT = 0;
-	private final static String GAB_NUMER_2_EDIT = "999";
-	private final static String GAB_PIETRO_2_EDIT = "XX";
-	private final static String GAB_LEKARZ_2_EDIT = "Mebalski";
-	private final static int GAB_BADANIE_2_EDIT = 1;
-	
-	
-	
 	@Test
 	public void checkConnection(){
 		assertNotNull(GabinetManager.getConnection());
@@ -152,11 +122,11 @@ public class BadanieManagerTest {
 		assertEquals(1,BadanieManager.addBadanie(badanie2));
 		
 		List<Badanie> Badania = BadanieManager.getAllBadania();
-		long usuwanyNr = Badania.get(0).getId(); // pierwszy numer z listy
+		long usuwanyNr = Badania.get(0).getId();
 		
 		int usuniecie = BadanieManager.deleteBadanie(usuwanyNr);
 		assertEquals(1, usuniecie);
-		//odswiezenie listy po usuneiciu
+
 		Badania = BadanieManager.getAllBadania();
 		
 		Badanie BadanieOdebrane = Badania.get(0);
