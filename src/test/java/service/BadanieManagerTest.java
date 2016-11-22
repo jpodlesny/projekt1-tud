@@ -8,12 +8,12 @@ import java.util.List;
 import org.junit.Test;
 
 import domain.Badanie;
+import service.BadanieManager;
 
 public class BadanieManagerTest {
 	
 	BadanieManager BadanieManager = new BadanieManager();
 	GabinetManager GabinetManager = new GabinetManager();
-	BadanieGabinetManager BadanieGabinetManager = new BadanieGabinetManager();
 	
 	
 	
@@ -26,9 +26,11 @@ public class BadanieManagerTest {
 	private final static String BAD_KOSZT_1_EDIT = "35";
 	
 	
+	
+	
 	@Test
 	public void checkConnection(){
-		assertNotNull(GabinetManager.getConnection());
+		assertNotNull(BadanieManager.getConnection());
 	}
 	
 	

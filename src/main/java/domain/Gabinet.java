@@ -2,28 +2,28 @@ package domain;
 
 public class Gabinet {
 	
-	private long id;
+	private int id;
 	private String numer;
 	private String pietro;
 	private String lekarz;
-	private int badanie;
+	private int badanieFK;
 	
 	public Gabinet(){
 		
 	}
 	
-	public Gabinet(String numer, String pietro, String lekarz, int badanie){
+	public Gabinet(String numer, String pietro, String lekarz, int badanieFK){
 		super();
 		this.numer=numer;
 		this.pietro=pietro;
 		this.lekarz=lekarz;
-		this.badanie=badanie;
+		this.badanieFK=badanieFK;
 	}
 	
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNumer() {
@@ -44,11 +44,11 @@ public class Gabinet {
 	public void setLekarz(String lekarz){
 		this.lekarz=lekarz;
 	}
-	public int getBadanie() {
-		return badanie;
+	public int getBadanieFK() {
+		return badanieFK;
 	}
-	public void setBadanie(int badanie) {
-		this.badanie = badanie;
+	public void setBadanieFK(int badanieFK) {
+		this.badanieFK = badanieFK;
 	}
 
 	

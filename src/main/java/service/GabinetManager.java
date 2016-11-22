@@ -73,7 +73,7 @@ public class GabinetManager {
 
 	
 	
-	Connection getConnection() {
+	public Connection getConnection() {
 		return connection;
 	}
 	
@@ -86,7 +86,7 @@ public class GabinetManager {
 			addGabinetStmt.setString(1, Gabinet.getNumer());
 			addGabinetStmt.setString(2, Gabinet.getPietro());
 			addGabinetStmt.setString(3, Gabinet.getLekarz());
-			addGabinetStmt.setInt(4, Gabinet.getBadanie());
+			addGabinetStmt.setInt(4, Gabinet.getBadanieFK());
 			
 			count = addGabinetStmt.executeUpdate();
 			
@@ -106,7 +106,7 @@ public class GabinetManager {
 			addGabinetStmt.setString(1, Gabinet.getNumer());
 			addGabinetStmt.setString(2, Gabinet.getPietro());
 			addGabinetStmt.setString(3, Gabinet.getLekarz());
-			addGabinetStmt.setInt(4, Gabinet.getBadanie());
+			addGabinetStmt.setInt(4, Gabinet.getBadanieFK());
 			
 			count = editGabinetStmt.executeUpdate();
 
@@ -132,7 +132,7 @@ public class GabinetManager {
 	
 	
 	
-	void deleteAllGabinety() {
+	public void deleteAllGabinety() {
 		try {
 			deleteAllGabinetyStmt.executeUpdate();
 			
@@ -146,7 +146,7 @@ public class GabinetManager {
 	
 	
 	
-	public List<Gabinet> getAllKredki() {
+	public List<Gabinet> getAllGabinety() {
 		List<Gabinet> Gabinety = new ArrayList<Gabinet>();
 
 		try {
@@ -158,7 +158,7 @@ public class GabinetManager {
 				g.setNumer(rs.getString("numer"));
 				g.setPietro(rs.getString("pietro"));
 				g.setLekarz(rs.getString("lekarz"));
-				g.setBadanie(rs.getInt("badanie"));
+				g.setBadanieFK(rs.getInt("badanie"));
 				Gabinety.add(g);
 			}
 
@@ -182,7 +182,7 @@ public class GabinetManager {
 				g.setNumer(rs.getString("numer"));
 				g.setPietro(rs.getString("pietro"));
 				g.setLekarz(rs.getString("lekarz"));
-				g.setBadanie(rs.getInt("badanie"));
+				g.setBadanieFK(rs.getInt("badanie"));
 			}
 
 		} catch (SQLException e) {
