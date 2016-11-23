@@ -3,7 +3,6 @@ package service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -22,23 +21,28 @@ public class GabinetManagerTest {
 	private final static String BAD_OPIS_1 = "Podstawowe, diagnostyczne badanie krwi";
 	private final static String BAD_KOSZT_1 = "50";
 	
+	private final static String BAD_NAZWA_2 = "Mycoplazma pneumoniae IgM";
+	private final static String BAD_OPIS_2 = "Badanie na obecność bakterii";
+	private final static String BAD_KOSZT_2 = "35";
+	 
+	
 	
 	private final static String GAB_NUMER_1 = "22";
 	private final static String GAB_PIETRO_1 = "parter";
 	private final static String GAB_LEKARZ_1 = "Kowalski";
-	private final static int GAB_BADANIE_1 = 0;
 	
 	private final static String GAB_NUMER_2 = "8";
-	private final static String GAB_PIETRO_2 = "I";
+	private final static String GAB_PIETRO_2 = "pierwsze";
 	private final static String GAB_LEKARZ_2 = "Nowak";
-	private final static int GAB_BADANIE_2 = 0;
 	
+	private final static String GAB_NUMER_3 = "99";
+	private final static String GAB_PIETRO_3 = "drugie";
+	private final static String GAB_LEKARZ_3 = "Ciemny";
+	
+	private final static String GAB_NUMER_4 = "35";
+	private final static String GAB_PIETRO_4 = "dwunaste";
+	private final static String GAB_LEKARZ_4 = "Jasny";
 
-	private final static String GAB_NUMER_1_EDIT = "9999";
-	private final static String GAB_PIETRO_1_EDIT = "XXX";
-	private final static String GAB_LEKARZ_1_EDIT = "Ciemny";
-	private final static int GAB_BADANIE_1_EDIT = 0;
-	
 	
 	
 	@Test
@@ -51,43 +55,68 @@ public class GabinetManagerTest {
 	@Test
 	public void checkAdding(){
 		
-		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
-		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
+		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1,BAD_KOSZT_1);
 		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
+
+		
 		assertEquals(1,BadanieManager.addBadanie(badanie));
+
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		
+		int badanieId = badania.get(0).getId();
+		
+		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanieId);
+		
 		assertEquals(1,GabinetManager.addGabinet(gabinet));
 
-		List<Gabinet> Gabinety = GabinetManager.getAllGabinety();
-		Gabinet GabinetOdebrany = Gabinety.get(0);
-
-		assertEquals(GAB_NUMER_1, GabinetOdebrany.getNumer());
-		assertEquals(GAB_PIETRO_1, GabinetOdebrany.getPietro());
-		assertEquals(GAB_LEKARZ_1, GabinetOdebrany.getLekarz());
-		assertEquals(GAB_BADANIE_1, GabinetOdebrany.getBadanieFK());
-				
+		List<Gabinet> gabinety = GabinetManager.getAllGabinety();
+		Gabinet gabinetRetrieved = gabinety.get(0);
+		
+		assertEquals(GAB_NUMER_1, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_1, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_1, gabinetRetrieved.getLekarz());
+		assertEquals(badanieId, gabinetRetrieved.getBadanieFK());
+		
 	}
 	
 	
 	@Test
 	public void checkGetGabinet(){
 		
-		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
-		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
+		Badanie badanie1 = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
+		Badanie badanie2 = new Badanie(BAD_NAZWA_2, BAD_OPIS_2, BAD_KOSZT_2);
 		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
-		assertEquals(1,BadanieManager.addBadanie(badanie));
-		assertEquals(1,GabinetManager.addGabinet(gabinet));
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
 
-		Gabinet gabinetSql = GabinetManager.getGabinet(0);
+		assertEquals(1,BadanieManager.addBadanie(badanie1));
+		assertEquals(1,BadanieManager.addBadanie(badanie2));
 
-		assertEquals(GAB_NUMER_1, gabinetSql.getNumer());
-		assertEquals(GAB_PIETRO_1, gabinetSql.getPietro());
-		assertEquals(GAB_LEKARZ_1, gabinetSql.getLekarz());
-		assertEquals(GAB_BADANIE_1, gabinetSql.getBadanieFK());
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		int badanie1Id = badania.get(0).getId();
+		int badanie2Id = badania.get(1).getId();
+		
+		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanie1Id);
+		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, badanie1Id);
+		Gabinet gabinet3 = new Gabinet(GAB_NUMER_3, GAB_PIETRO_3, GAB_LEKARZ_3, badanie2Id);
+		Gabinet gabinet4 = new Gabinet(GAB_NUMER_4, GAB_PIETRO_4, GAB_LEKARZ_4, badanie2Id);
+		
+		assertEquals(1,GabinetManager.addGabinet(gabinet1));
+		assertEquals(1,GabinetManager.addGabinet(gabinet2));
+		assertEquals(1,GabinetManager.addGabinet(gabinet3));
+		assertEquals(1,GabinetManager.addGabinet(gabinet4));
+
+		List<Gabinet> gabinety = GabinetManager.getAllGabinety();
+		gabinety = GabinetManager.getAllGabinety();
 				
+		Gabinet gabinetRetrieved = gabinety.get(2);
+		assertEquals(GAB_NUMER_3, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_3, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_3, gabinetRetrieved.getLekarz());
+		assertEquals(badanie2Id, gabinetRetrieved.getBadanieFK());
+		
 	}
 	
 	
@@ -96,73 +125,28 @@ public class GabinetManagerTest {
 	public void checkGetGabinetNotExisting(){
 		
 		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
-		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
 		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
-		assertEquals(1,BadanieManager.addBadanie(badanie));
-		assertEquals(1,GabinetManager.addGabinet(gabinet));
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
 
-		Gabinet gabinetSql =GabinetManager.getGabinet(2);
+		
+		assertEquals(1,BadanieManager.addBadanie(badanie));
 
-		assertEquals(null, gabinetSql.getNumer());
-		assertEquals(null, gabinetSql.getPietro());
-		assertEquals(null, gabinetSql.getLekarz());
-		assertEquals(0, gabinetSql.getBadanieFK());
-				
-	}
-	
-	
-	
-	@Test
-	public void checkEditing(){
-		
-		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
-		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
-		Gabinet gabinet_edit = new Gabinet(GAB_NUMER_1_EDIT, GAB_PIETRO_1_EDIT, GAB_LEKARZ_1_EDIT, GAB_BADANIE_1_EDIT);
-		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
-		assertEquals(1,BadanieManager.addBadanie(badanie));
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		int badanieId = badania.get(0).getId();
+
+		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanieId);
 		assertEquals(1,GabinetManager.addGabinet(gabinet));
 		
-		assertEquals(1,GabinetManager.editGabinet(gabinet_edit));
+		Gabinet getGabinet = GabinetManager.getGabinet(29);
 		
-		List<Gabinet> Gabinety = GabinetManager.getAllGabinety();
-		Gabinet GabinetOdebrany = Gabinety.get(0);
-				
-		assertEquals(GAB_NUMER_1_EDIT, GabinetOdebrany.getNumer());
-		assertEquals(GAB_PIETRO_1_EDIT, GabinetOdebrany.getPietro());
-		assertEquals(GAB_LEKARZ_1_EDIT, GabinetOdebrany.getLekarz());
-		assertEquals(GAB_BADANIE_1_EDIT, GabinetOdebrany.getBadanieFK());
-		
-	}
-	
-	
-	
-	@Test
-	public void checkEditingNotExistingBadanie(){
-		
-		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
-		Gabinet gabinet = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
-		Gabinet gabinet_edit = new Gabinet(GAB_NUMER_1_EDIT, GAB_PIETRO_1_EDIT, GAB_LEKARZ_1_EDIT, GAB_BADANIE_1_EDIT);
-		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
-		assertEquals(1,BadanieManager.addBadanie(badanie));
-		assertEquals(1,GabinetManager.addGabinet(gabinet));
-		assertEquals(0,GabinetManager.editGabinet(gabinet_edit));
-		
-		List<Gabinet> Gabinety = GabinetManager.getAllGabinety();
-		Gabinet GabinetOdebrany = Gabinety.get(0);
-		
-		assertEquals(GAB_NUMER_1, GabinetOdebrany.getNumer());
-		assertEquals(GAB_PIETRO_1, GabinetOdebrany.getPietro());
-		assertEquals(GAB_LEKARZ_1, GabinetOdebrany.getLekarz());
-		assertEquals(GAB_BADANIE_1, GabinetOdebrany.getBadanieFK());
+		assertEquals(null, getGabinet.getNumer());
+		assertEquals(null, getGabinet.getPietro());
+		assertEquals(null, getGabinet.getLekarz());
+		assertEquals(0, getGabinet.getBadanieFK());
 				
 	}
-	
+		
 	
 	
 	@Test
@@ -170,60 +154,163 @@ public class GabinetManagerTest {
 		
 		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
 		
-		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
-		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, GAB_BADANIE_2);
-		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
+
 		
 		assertEquals(1,BadanieManager.addBadanie(badanie));
+		
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		int badanieId = badania.get(0).getId();
+		
+		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanieId);
+		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, badanieId);
+		
 		assertEquals(1,GabinetManager.addGabinet(gabinet1));
 		assertEquals(1,GabinetManager.addGabinet(gabinet2));
 		
-		List<Gabinet> Gabinety = GabinetManager.getAllGabinety();
-		long usuwanyNr = Gabinety.get(1).getId(); // drugi numer z listy
+		List<Gabinet> gabinety = GabinetManager.getAllGabinety();
+		int deletedId = gabinety.get(0).getId();
+		int delete = GabinetManager.deleteGabinet(deletedId);
+		assertEquals(1, delete);
 		
-		int usuniecie = GabinetManager.deleteGabinet(usuwanyNr);
-		assertEquals(1, usuniecie);
-		Gabinety = GabinetManager.getAllGabinety();
-				
-		Gabinet GabinetOdebrany = Gabinety.get(0);
-		assertEquals(GAB_NUMER_1, GabinetOdebrany.getNumer());
-		assertEquals(GAB_PIETRO_1, GabinetOdebrany.getPietro());
-		assertEquals(GAB_LEKARZ_1, GabinetOdebrany.getLekarz());
-		assertEquals(GAB_BADANIE_1, GabinetOdebrany.getBadanieFK());
+		gabinety = GabinetManager.getAllGabinety();
+		
+		Gabinet characterRetrieved = gabinety.get(0);		
+		
+		assertEquals(GAB_NUMER_2, characterRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_2, characterRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_2, characterRetrieved.getLekarz());
+		assertEquals(badanieId, characterRetrieved.getBadanieFK());
 		
 	}
-	
 	
 	
 	@Test
-	public void checkDeleteOneGabinet(){
+	public void checkGetAll(){
 		
-		Badanie badanie = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
+
+		Badanie badanie1 = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
+		Badanie badanie2 = new Badanie(BAD_NAZWA_2, BAD_OPIS_2, BAD_KOSZT_2);
 		
-		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, GAB_BADANIE_1);
-		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, GAB_BADANIE_2);
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
+
 		
-		BadanieManager.deleteAllBadania();
-		GabinetManager.deleteAllGabinety();
+		assertEquals(1,BadanieManager.addBadanie(badanie1));
+		assertEquals(1,BadanieManager.addBadanie(badanie2));
 		
-		assertEquals(1,BadanieManager.addBadanie(badanie));
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		int badanie1Id = badania.get(0).getId();
+		int badanie2Id = badania.get(1).getId();
+		
+		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanie1Id);
+		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, badanie1Id);
+		Gabinet gabinet3 = new Gabinet(GAB_NUMER_3, GAB_PIETRO_3, GAB_LEKARZ_3, badanie2Id);
+		Gabinet gabinet4 = new Gabinet(GAB_NUMER_4, GAB_PIETRO_4, GAB_LEKARZ_4, badanie2Id);
+		
 		assertEquals(1,GabinetManager.addGabinet(gabinet1));
 		assertEquals(1,GabinetManager.addGabinet(gabinet2));
+		assertEquals(1,GabinetManager.addGabinet(gabinet3));
+		assertEquals(1,GabinetManager.addGabinet(gabinet4));
 		
+		List<Gabinet> gabinety = GabinetManager.getAllGabinety();
 		
-		List<Badanie> Badania = BadanieManager.getAllBadania();
-		long usuwanyNr = Badania.get(0).getId(); // pierwszy numer z listy
-		int usuniecie = BadanieManager.deleteBadanie(usuwanyNr);
+		Gabinet gabinetRetrieved = gabinety.get(0);
+		assertEquals(GAB_NUMER_1, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_1, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_1, gabinetRetrieved.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved.getBadanieFK());
 		
-		assertEquals(1, usuniecie);
-		List<Gabinet> Gabinety = GabinetManager.getAllGabinety();
-		List<Gabinet> pusto = new ArrayList<Gabinet>();
+		gabinetRetrieved = gabinety.get(1);
+		assertEquals(GAB_NUMER_2, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_2, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_2, gabinetRetrieved.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved.getBadanieFK());
 		
-		assertEquals(pusto,Gabinety);
-			
+		gabinetRetrieved = gabinety.get(2);
+		assertEquals(GAB_NUMER_3, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_3, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_3, gabinetRetrieved.getLekarz());
+		assertEquals(badanie2Id, gabinetRetrieved.getBadanieFK());
+		
+		gabinetRetrieved = gabinety.get(3);
+		assertEquals(GAB_NUMER_4, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_4, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_4, gabinetRetrieved.getLekarz());
+		assertEquals(badanie2Id, gabinetRetrieved.getBadanieFK());
+		
 	}
+	
+	
+	@Test
+	public void getGabinetyPoBadaniach(){
+		
+		Badanie badanie1 = new Badanie(BAD_NAZWA_1, BAD_OPIS_1, BAD_KOSZT_1);
+		Badanie badanie2 = new Badanie(BAD_NAZWA_2, BAD_OPIS_2, BAD_KOSZT_2);
+		
+		GabinetManager.clearGabinety();
+		BadanieManager.clearBadania();
+		
+		assertEquals(1,BadanieManager.addBadanie(badanie1));
+		assertEquals(1,BadanieManager.addBadanie(badanie2));
+		
+		List<Badanie> badania = BadanieManager.getAllBadania();
+		int badanie1Id = badania.get(0).getId();
+		int badanie2Id = badania.get(1).getId();
+		
+		Gabinet gabinet1 = new Gabinet(GAB_NUMER_1, GAB_PIETRO_1, GAB_LEKARZ_1, badanie1Id);
+		Gabinet gabinet2 = new Gabinet(GAB_NUMER_2, GAB_PIETRO_2, GAB_LEKARZ_2, badanie1Id);
+		Gabinet gabinet3 = new Gabinet(GAB_NUMER_3, GAB_PIETRO_3, GAB_LEKARZ_3, badanie2Id);
+		Gabinet gabinet4 = new Gabinet(GAB_NUMER_4, GAB_PIETRO_4, GAB_LEKARZ_4, badanie2Id);
+		
+		assertEquals(1,GabinetManager.addGabinet(gabinet1));
+		assertEquals(1,GabinetManager.addGabinet(gabinet2));
+		assertEquals(1,GabinetManager.addGabinet(gabinet3));
+		assertEquals(1,GabinetManager.addGabinet(gabinet4));
+		
+		List<Gabinet> gabinety = GabinetManager.getAllGabinety();
+		
+		Gabinet gabinetRetrieved = gabinety.get(0);
+		assertEquals(GAB_NUMER_1, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_1, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_1, gabinetRetrieved.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved.getBadanieFK());
+		
+		gabinetRetrieved = gabinety.get(2);
+		assertEquals(GAB_NUMER_3, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_3, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_3, gabinetRetrieved.getLekarz());
+		assertEquals(badanie2Id, gabinetRetrieved.getBadanieFK());
+		
+		gabinetRetrieved = gabinety.get(3);
+		assertEquals(GAB_NUMER_4, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_4, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_4, gabinetRetrieved.getLekarz());
+		assertEquals(badanie2Id, gabinetRetrieved.getBadanieFK());
+		
+		gabinetRetrieved = gabinety.get(1);
+		assertEquals(GAB_NUMER_2, gabinetRetrieved.getNumer());
+		assertEquals(GAB_PIETRO_2, gabinetRetrieved.getPietro());
+		assertEquals(GAB_LEKARZ_2, gabinetRetrieved.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved.getBadanieFK());
+		
+		List<Gabinet> gabinetyPoBadaniu = GabinetManager.getAllGabinetyPoBadaniu(badanie1Id);
+		
+		Gabinet gabinetRetrieved2 = gabinetyPoBadaniu.get(0);
+		assertEquals(GAB_NUMER_1, gabinetRetrieved2.getNumer());
+		assertEquals(GAB_PIETRO_1, gabinetRetrieved2.getPietro());
+		assertEquals(GAB_LEKARZ_1, gabinetRetrieved2.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved2.getBadanieFK());
+		
+		gabinetRetrieved2 = gabinetyPoBadaniu.get(1);
+		assertEquals(GAB_NUMER_2, gabinetRetrieved2.getNumer());
+		assertEquals(GAB_PIETRO_2, gabinetRetrieved2.getPietro());
+		assertEquals(GAB_LEKARZ_2, gabinetRetrieved2.getLekarz());
+		assertEquals(badanie1Id, gabinetRetrieved2.getBadanieFK());
+		
+	}
+	
 	
 	
 }

@@ -20,7 +20,7 @@ public class Gabinet {
 		this.badanieFK=badanieFK;
 	}
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
